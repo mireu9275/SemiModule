@@ -14,11 +14,17 @@ import kotlin.io.path.exists
 abstract class AbstractExpansionModule(
     id: String,
     name: String,
-    material: Material
-) : Module(id, name, material), Expandable {
+    material: Material,
+    structureWidth: Double,
+    structureHeight: Double
+) : Module(id, name, material, structureWidth, structureHeight), Expandable {
 
     // 확장 로직 (공통)
-    override fun expandModule(blockLocation: Location, playerLocaion: Location, playerDirection: BlockFace) {
+    override fun expandModule(
+        blockLocation: Location,
+        playerLocaion: Location,
+        playerDirection: BlockFace
+    ) {
         // 스케마틱 파일 위치
         val structureFile = main.dataFolder.toPath().resolve("structures/${id.lowercase()}.nbt")
 
@@ -34,9 +40,21 @@ abstract class AbstractExpansionModule(
             else -> StructureRotation.NONE // 기본값 북
         }
 
+        val (finalWidth, finalHeight) = when (rotation) {
+            StructureRotation.ROTATION_90, StructureRotation.ROTATION_270 -> structureHeight to structureWidth
+            else -> structureWidth to structureHeight
+        }
+
+        val centerOffset = Location(
+            playerLocaion.world,
+            playerLocaion.x - finalWidth / 2,
+            playerLocaion.y,
+            playerLocaion.z - finalHeight / 2
+        )
+
         StructureBlockLibApi.INSTANCE
             .loadStructure(main)
-            .at(playerLocaion)
+            .at(centerOffset)
             .rotation(rotation)
             .loadFromPath(structureFile)
             .onException { e -> main.logger.log(Level.SEVERE, "Structure 파일을 불러오지 못하였습니다.")}

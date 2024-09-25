@@ -6,8 +6,10 @@ import org.bukkit.Material
 class BasicExpansionModule(
     id: String,
     name: String,
-    material: Material
-) : AbstractExpansionModule(id, name, material) {
+    material: Material,
+    structureWidth: Double = 0.0,
+    structureHeight: Double = 0.0
+) : AbstractExpansionModule(id, name, material, structureWidth, structureHeight) {
     override fun interact() {
         println("Basic 확장 모듈과 상호작용 중입니다!")
     }

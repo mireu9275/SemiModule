@@ -6,8 +6,10 @@ import org.bukkit.Material
 class CrossExpansionModule(
     id: String,
     name: String,
-    material: Material
-) : AbstractExpansionModule(id, name, material) {
+    material: Material,
+    structureWidth: Double = 0.0,
+    structureHeight: Double = 0.0
+) : AbstractExpansionModule(id, name, material,structureWidth, structureHeight) {
     override fun interact() {
         TODO("Not yet implemented")
     }

@@ -8,7 +8,7 @@ import org.bukkit.entity.Player
 class ExpansionSelectModule(
     id: String,
     name: String,
-    material: Material
+    material: Material,
 ) : Module(id, name, material) {
     override fun interact() {
         println("Interacting BasicExpandModule")
