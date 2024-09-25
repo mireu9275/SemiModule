@@ -3,7 +3,6 @@ package kr.eme.semiModule.listeners
 import kr.eme.semiModule.interfaces.Expandable
 import kr.eme.semiModule.managers.ModuleBlockManager
 import kr.eme.semiModule.managers.ModuleManager
-import kr.eme.semiModule.worldEditPlugin
 import org.bukkit.block.Block
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -30,7 +29,7 @@ object ModuleListener : Listener {
             println("$module ${module.id} : is Expandable ${module is Expandable}")
             if (module is Expandable) {
                 val playerDirection = player.facing // 플레이어가 바라보는 방향
-                module.expandModule(block.location, playerDirection, worldEditPlugin)
+                module.expandModule(block.location, playerDirection)
             }
             player.sendMessage("§a${module.name} 모듈과 상호작용했습니다!")
             CooldownManager.setCooldown(player)

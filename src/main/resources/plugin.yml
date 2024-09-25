@@ -4,7 +4,9 @@ version: 1.0
 api-version: 1.20
 depend:
   - SemiTradeShop
-  - WorldEdit
+libraries:
+  - com.github.shynixn.structureblocklib:structureblocklib-bukkit-api:2.13.0
+  - com.github.shynixn.structureblocklib:structureblocklib-bukkit-core:2.13.0
 commands:
   module:
     usage: /module or /모듈
