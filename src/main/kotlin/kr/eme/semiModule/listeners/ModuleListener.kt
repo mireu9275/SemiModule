@@ -29,7 +29,7 @@ object ModuleListener : Listener {
             println("$module ${module.id} : is Expandable ${module is Expandable}")
             if (module is Expandable) {
                 val playerDirection = player.facing // 플레이어가 바라보는 방향
-                module.expandModule(block.location, playerDirection)
+                module.expandModule(block.location, player.location, playerDirection)
             }
             player.sendMessage("§a${module.name} 모듈과 상호작용했습니다!")
             CooldownManager.setCooldown(player)

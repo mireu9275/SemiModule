@@ -4,5 +4,5 @@ import org.bukkit.Location
 import org.bukkit.block.BlockFace
 
 interface Expandable {
-    fun expandModule(location: Location, playerDirection: BlockFace)
+    fun expandModule(blockLocation: Location, playerLocation: Location, playerDirection: BlockFace)
 }
