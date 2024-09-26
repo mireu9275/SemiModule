@@ -5,6 +5,7 @@ import com.github.shynixn.structureblocklib.api.enumeration.StructureRotation
 import kr.eme.semiModule.interfaces.Expandable
 import kr.eme.semiModule.main
 import kr.eme.semiModule.managers.ModuleBlockManager
+import kr.eme.semiModule.objects.Offset
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.block.BlockFace
@@ -14,18 +15,17 @@ import kotlin.io.path.exists
 abstract class AbstractExpansionModule(
     id: String,
     name: String,
-    material: Material,
-    structureWidth: Double,
-    structureHeight: Double
-) : Module(id, name, material, structureWidth, structureHeight), Expandable {
+    material: Material
+) : Module(id, name, material), Expandable {
+
+    abstract fun getOffsets(): Map<BlockFace, Offset>
 
     // 확장 로직 (공통)
     override fun expandModule(
         blockLocation: Location,
-        playerLocaion: Location,
+        playerLocation: Location,
         playerDirection: BlockFace
     ) {
-        // 스케마틱 파일 위치
         val structureFile = main.dataFolder.toPath().resolve("structures/${id.lowercase()}.nbt")
 
         if (!structureFile.exists()) {
@@ -33,32 +33,32 @@ abstract class AbstractExpansionModule(
             return
         }
 
+        // 회전 및 미러링 설정 (필요에 따라 조정)
         val rotation = when (playerDirection) {
-            BlockFace.EAST -> StructureRotation.ROTATION_90
-            BlockFace.SOUTH -> StructureRotation.ROTATION_180
-            BlockFace.WEST -> StructureRotation.ROTATION_270
-            else -> StructureRotation.NONE // 기본값 북
+            BlockFace.WEST -> StructureRotation.ROTATION_90
+            BlockFace.NORTH -> StructureRotation.ROTATION_180
+            BlockFace.EAST -> StructureRotation.ROTATION_270
+            else -> StructureRotation.NONE // 남쪽이 기본값
         }
 
-        val (finalWidth, finalHeight) = when (rotation) {
-            StructureRotation.ROTATION_90, StructureRotation.ROTATION_270 -> structureHeight to structureWidth
-            else -> structureWidth to structureHeight
-        }
+        // 방향별 오프셋 가져오기
+        val offset = getOffsets()[playerDirection] ?: Offset(0.0, 0.0, 0.0)
 
-        val centerOffset = Location(
-            playerLocaion.world,
-            playerLocaion.x - finalWidth / 2,
-            playerLocaion.y,
-            playerLocaion.z - finalHeight / 2
+        // 위치 조정
+        val adjustedLocation = Location(
+            blockLocation.world,
+            blockLocation.x + offset.x,
+            playerLocation.y + offset.y,
+            blockLocation.z + offset.z
         )
-
+        // 구조물 배치
         StructureBlockLibApi.INSTANCE
             .loadStructure(main)
-            .at(centerOffset)
+            .at(adjustedLocation)
             .rotation(rotation)
             .loadFromPath(structureFile)
-            .onException { e -> main.logger.log(Level.SEVERE, "Structure 파일을 불러오지 못하였습니다.")}
-            .onResult { _ -> main.logger.log(Level.INFO, "Structure $id 를 불러왔습니다.")}
+            .onException { e -> main.logger.log(Level.SEVERE, "Structure 파일을 불러오지 못하였습니다.", e) }
+            .onResult { _ -> main.logger.log(Level.INFO, "Structure $id 를 성공적으로 불러왔습니다.") }
 
         // 모듈 블록 제거 및 등록 해제
         blockLocation.block.type = Material.AIR
