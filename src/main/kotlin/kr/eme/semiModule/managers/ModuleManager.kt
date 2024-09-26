@@ -41,7 +41,7 @@ object ModuleManager {
         val basicExpansionModule = BasicExpansionModule("BasicExpansionModule","기본 확장 모듈", Material.WHITE_WOOL)
         val lExpansionModule = LExpansionModule("LExpansionModule","L자 확장 모듈", Material.STONE)
         val tExpansionModule = TExpansionModule("TExpansionModule","T자 확장 모듈", Material.STONE)
-        val crossExpansionModule = CrossExpansionModule("TExpansionModule","십자 확장 모듈", Material.STONE)
+        val crossExpansionModule = CrossExpansionModule("CrossExpansionModule","십자 확장 모듈", Material.STONE)
 
         // 모듈 등록
         registerModule(basicExpansionModule)
