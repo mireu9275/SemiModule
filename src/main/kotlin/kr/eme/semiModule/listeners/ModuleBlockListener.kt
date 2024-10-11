@@ -1,6 +1,7 @@
 import kr.eme.semiModule.managers.ModuleBlockManager
 import kr.eme.semiModule.managers.ModuleItemManager
 import kr.eme.semiModule.managers.ModuleManager
+import org.bukkit.Material
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockBreakEvent
@@ -24,6 +25,12 @@ object ModuleBlockListener : Listener {
             return
         }
 
+        val blockBelowLocation = event.block.location.clone().add(0.0, -1.0, 0.0)
+        if (blockBelowLocation.block.type != Material.GREEN_GLAZED_TERRACOTTA) {
+            player.sendMessage("§c모듈을 설치할 수 없습니다. 초록색 유광 테라코타 위에 설치해주세요.")
+            event.isCancelled = true
+            return
+        }
         // 모듈 블록을 등록하고 플레이어에게 아이템 이름을 알림
         ModuleBlockManager.registerModuleBlock(event.block, moduleId)
         player.sendMessage("§a모듈을 설치했습니다: ${item.itemMeta?.displayName ?: moduleId}")
