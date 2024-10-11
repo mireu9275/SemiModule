@@ -9,9 +9,13 @@ import org.bukkit.inventory.ItemStack
 
 object ModuleManager {
     private val moduleList = mutableListOf<kr.eme.semiModule.objects.modules.Module>()
+    private val guiRequiredModules = mutableListOf<String>()
 
-    fun registerModule(module: kr.eme.semiModule.objects.modules.Module) {
+    fun registerModule(module: kr.eme.semiModule.objects.modules.Module, requiresGUI: Boolean = false) {
         moduleList.add(module)
+        if (requiresGUI) {
+            guiRequiredModules.add(module.name) // GUI가 필요한 모듈을 따로 관리
+        }
     }
 
     fun getModuleByName(name: String): kr.eme.semiModule.objects.modules.Module? {
@@ -36,6 +40,10 @@ object ModuleManager {
         return moduleList.map { it.id }
     }
 
+    fun isGUIRequired(moduleName: String): Boolean {
+        return guiRequiredModules.contains(moduleName) // GUI가 필요한 모듈인지 확인
+    }
+
     init {
         // 모듈 초기화
         val basicExpansionModule = BasicExpansionModule("BasicExpansionModule","기본 확장 모듈", Material.WHITE_WOOL)
@@ -44,7 +52,7 @@ object ModuleManager {
         val crossExpansionModule = CrossExpansionModule("CrossExpansionModule","십자 확장 모듈", Material.STONE)
 
         // 모듈 등록
-        registerModule(basicExpansionModule)
+        registerModule(basicExpansionModule, true)
         registerModule(lExpansionModule)
         registerModule(tExpansionModule)
         registerModule(crossExpansionModule)
