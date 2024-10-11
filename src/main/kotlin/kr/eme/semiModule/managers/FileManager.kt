@@ -7,7 +7,7 @@ import java.io.File
 
 object FileManager {
 
-    // 모듈의 블록 데이터를 YML로 저장
+    // 모듈의 블록 데이터를 YML 로 저장
     fun saveModuleYmlData(file: File, blockData: Map<Location, String>) {
         val yml = YamlConfiguration()
 
@@ -19,7 +19,7 @@ object FileManager {
         yml.save(file)
     }
 
-    // YML에서 모듈 블록 데이터 로드
+    // YML 에서 모듈 블록 데이터 로드
     fun loadModuleYmlData(file: File): Map<Location, String> {
         val yml = YamlConfiguration.loadConfiguration(file)
         val blockData = mutableMapOf<Location, String>()

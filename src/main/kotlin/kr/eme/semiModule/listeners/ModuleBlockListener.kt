@@ -1,3 +1,5 @@
+package kr.eme.semiModule.listeners
+
 import kr.eme.semiModule.managers.ModuleBlockManager
 import kr.eme.semiModule.managers.ModuleItemManager
 import kr.eme.semiModule.managers.ModuleManager
@@ -16,7 +18,7 @@ object ModuleBlockListener : Listener {
         val moduleIdBeforePlace = ModuleItemManager.getModuleIdFromNBT(item)
         println("모듈 ID (놓기 전): $moduleIdBeforePlace")
 
-        // 로그 추가: NBT에서 모듈 ID 가져오기 전에 로그 출력
+        // 로그 추가: NBT 에서 모듈 ID 가져오기 전에 로그 출력
         player.sendMessage("§e아이템이 설치되었습니다: ${item.type}")
         val moduleId = ModuleItemManager.getModuleIdFromNBT(item)
 

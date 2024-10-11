@@ -1,6 +1,7 @@
 package kr.eme.semiModule
 
 import kr.eme.semiModule.commands.ModuleCommand
+import kr.eme.semiModule.listeners.ModuleBlockListener
 import kr.eme.semiModule.listeners.ModuleListener
 import kr.eme.semiModule.managers.ModuleBlockManager
 import org.bukkit.plugin.java.JavaPlugin

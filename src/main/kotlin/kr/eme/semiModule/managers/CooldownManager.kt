@@ -1,3 +1,5 @@
+package kr.eme.semiModule.managers
+
 import org.bukkit.entity.Player
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
